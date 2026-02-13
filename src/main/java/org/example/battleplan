@@ -1,0 +1,62 @@
+Route - id -unnecessary
+Trip( routeId, tripId)
+Stops(stopId) - maybe unnecessary, useful for output ?
+StopTimes(tripId, arrival_time, stopId)
+
+
+Input Param
+
+stopId = 12345
+num_buses_per_line = 5
+format: relative/absoulute
+
+
+num_buses_per_line - The max number of upcoming arrivals to show
+per route..
+
+103(5)
+102(5)
+
+
+Display buses arriving at the given stop within the next 2 hours.
+
+Get current time
+
+Filter StopTimes for stopId and current time + 2
+
+This will give us smaller dataset to work with
+
+
+trip_id,arrival_time,stop_id
+NORMAL_03_101_Return_22:10,22:10:00,2
+NORMAL_03_106_Return_12:40,13:01:45,2
+NORMAL_03_101_Go_17:20,17:28:46,2
+NORMAL_03_101_Go_16:45,16:53:07,2
+NORMAL_03_101_Go_07:20,07:29:48,2
+NORMAL_03_106_Go_19:45,19:59:26,2
+NORMAL_03_101_Return_17:45,17:52:15,2
+NORMAL_03_101_Go_16:45,16:53:07,2
+NORMAL_03_101_Go_07:50,07:59:48,2
+NORMAL_03_101_Go_18:05,18:14:05,2
+
+handle num_buses_per_line = 5
+
+use tripId to get the trip... There we have routeId..
+based on num_buses_per_line we should only have that much buses...
+Ideally we store this in hashmap of smth..
+
+then check if routeId map is larger or equal 5 then ignorre
+else add arrival_time to list
+
+at the end we'd have something like
+IGNORE TIMES
+[102, [13:00, 14:00, 15:00, 16:00, 17:00]]
+[103, [13:10, 14:10, 15:10, 16:10, 17:10]]
+[104, [13:20, 14:20, 15:20, 16:20, 17:20]]
+
+get stop name from stopId
+
+output
+Stop 2
+Arival time 13:00
+Time until arrival 10 min

@@ -1,38 +1,20 @@
 package streaming;
 
-import fixtures.DataFixture;
 import org.example.dto.StopTimesDto;
 import org.example.streaming.loaders.StopTimesLoader;
-import org.example.streaming.loaders.TripLoader;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalTime;
 import java.util.Map;
-import java.util.NavigableSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StopTimesLoaderTest {
-  private Path tempCsv;
-
-  @BeforeEach
-  void setUp() throws IOException {
-    tempCsv = Files.createTempFile("stop_times", ".txt");
-    Files.writeString(tempCsv, DataFixture.STOP_TIMES_CSV);
-  }
 
   private Map<String, StopTimesDto> getTripToStopsTest() throws IOException {
     LocalTime currentTime = LocalTime.of(12, 0);
-    StopTimesLoader loader = new StopTimesLoader(2, currentTime,2) {
-      @Override
-      protected Path filePath() {
-        return tempCsv;
-      }
-    };
+    StopTimesLoader loader = new StopTimesLoader(2, currentTime,2) ;
     loader.load();
 
     return loader.getTripToStops();

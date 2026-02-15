@@ -1,5 +1,6 @@
 plugins {
-    id("java")
+    java
+    application
 }
 
 group = "org.example"
@@ -17,6 +18,28 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+application {
+    mainClass.set("org.example.Main")
+}
+
 tasks.test {
     useJUnitPlatform()
 }
+
+
+// AI Generated
+tasks.jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes["Main-Class"] = "org.example.Main"
+    }
+    from(sourceSets.main.get().output)
+
+    // Include all runtime dependencies
+    from({
+        configurations.runtimeClasspath.get()
+            .filter { it.name.endsWith("jar") }
+            .map { zipTree(it) }
+    })
+}
+

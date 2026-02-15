@@ -2,11 +2,7 @@ package org.example.streaming.loaders;
 
 import org.example.dto.StopsDto;
 import org.example.streaming.StreamingLoader;
-
-import java.net.URISyntaxException;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
 
 public class StopLoader extends StreamingLoader<StopsDto> {
   private final int paramStopId;
@@ -21,12 +17,8 @@ public class StopLoader extends StreamingLoader<StopsDto> {
   }
 
   @Override
-  protected Path filePath() throws URISyntaxException {
-    return Path.of(
-        Objects.requireNonNull( getClass()
-            .getClassLoader()
-            .getResource("data/stops.txt")
-        ).toURI());
+  protected String resourcePath() {
+    return "data/stops.txt";
   }
 
   @Override

@@ -1,34 +1,16 @@
 package streaming;
 
-import fixtures.DataFixture;
 import org.example.streaming.loaders.StopLoader;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StopLoaderTest {
-  private Path tempCsv;
-
-  @BeforeEach
-  void setUp() throws IOException {
-    tempCsv = Files.createTempFile("stops", ".txt");
-    Files.writeString(tempCsv, DataFixture.STOPS_CSV);
-  }
 
   @Test
   void testStopFound() throws Exception {
-    StopLoader loader = new StopLoader(2) {
-      @Override
-      protected Path filePath() {
-        return tempCsv;
-      }
-    };
+    StopLoader loader = new StopLoader(2);
 
     loader.load();
 
@@ -39,12 +21,7 @@ public class StopLoaderTest {
 
   @Test
   void testStopNotFound() throws Exception {
-    StopLoader loader = new StopLoader(100) {
-      @Override
-      protected Path filePath() {
-        return tempCsv;
-      }
-    };
+    StopLoader loader = new StopLoader(100);
     loader.load();
     assertNull(loader.getFoundStop(), "Stop should not be found");
   }

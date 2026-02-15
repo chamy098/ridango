@@ -1,36 +1,18 @@
 package streaming;
 
-import fixtures.DataFixture;
 import org.example.dto.StopTimesDto;
 import org.example.streaming.loaders.TripLoader;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalTime;
 import java.util.Map;
 import java.util.NavigableSet;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TripLoaderTest {
-  private Path tempCsv;
-
-  @BeforeEach
-  void setUp() throws IOException {
-    tempCsv = Files.createTempFile("trips", ".txt");
-    Files.writeString(tempCsv, DataFixture.TRIPS_CSV);
-  }
 
   private Map<Integer, NavigableSet<LocalTime>> getTestRoutes(Map<String, StopTimesDto> tripToStops, int numBusesPerLine) throws IOException {
-    TripLoader loader = new TripLoader(tripToStops, numBusesPerLine) {
-      @Override
-      protected Path filePath() {
-        return tempCsv;
-      }
-    };
+    TripLoader loader = new TripLoader(tripToStops, numBusesPerLine) ;
     loader.load();
 
     return loader.getRoutes();

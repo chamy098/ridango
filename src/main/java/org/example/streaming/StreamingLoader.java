@@ -2,9 +2,6 @@ package org.example.streaming;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -15,7 +12,7 @@ import com.fasterxml.jackson.databind.MappingIterator;
 public abstract class StreamingLoader<T> {
 
   protected abstract Class<T> dtoClass();
-  protected abstract Path filePath() throws URISyntaxException;
+  protected abstract String resourcePath();
   protected abstract void processBatch(List<T> batch);
 
   private static final int BATCH_SIZE = 1000;
@@ -25,7 +22,7 @@ public abstract class StreamingLoader<T> {
     CsvSchema schema = CsvSchema.emptySchema().withHeader();
 
     try (
-        InputStream is = Files.newInputStream(filePath());
+        InputStream is = getClass().getClassLoader().getResourceAsStream(resourcePath());
         MappingIterator<T> it =
             mapper.readerFor(dtoClass())
                 .with(schema)
@@ -45,8 +42,6 @@ public abstract class StreamingLoader<T> {
       if (!batch.isEmpty()) {
         processBatch(batch);
       }
-    } catch (URISyntaxException e) {
-      throw new RuntimeException(e);
     }
   }
 }

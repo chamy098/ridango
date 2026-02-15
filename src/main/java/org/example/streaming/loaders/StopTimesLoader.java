@@ -2,12 +2,10 @@ package org.example.streaming.loaders;
 
 import org.example.dto.StopTimesDto;
 import org.example.streaming.StreamingLoader;
-
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.time.Duration;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class StopTimesLoader extends StreamingLoader<StopTimesDto> {
     private final int paramStopId;
@@ -21,22 +19,14 @@ public class StopTimesLoader extends StreamingLoader<StopTimesDto> {
     this.maxTime = currentTime.plusHours(duration);
   }
 
-
   @Override
     protected Class<StopTimesDto> dtoClass() {
         return StopTimesDto.class;
     }
 
     @Override
-    protected Path filePath() throws URISyntaxException {
-        return Path.of(
-            Objects.requireNonNull(
-                    getClass()
-                            .getClassLoader()
-                            .getResource("data/stop_times.txt"),
-                    "stop_times.txt not found on classpath"
-            ).toURI()
-    );
+    protected String resourcePath() {
+        return "data/stop_times.txt";
     }
 
     @Override

@@ -26,9 +26,10 @@ tasks.test {
     useJUnitPlatform()
 }
 
-
 // AI Generated
 tasks.jar {
+    archiveBaseName.set("busTrips")
+    archiveVersion.set("")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes["Main-Class"] = "org.example.Main"
